@@ -132,10 +132,9 @@ always have $N$ to ensure the algorithm terminates.)*
 #' fprime <- function(x) {2 * x}
 #' newton_solver(f, fprime, x0 = 10, eps = 10^(-4))
 newton_solver <- function(f, fprime, x0, N = 1000, eps = 10e-4) {
-  counter = 0
   best_approximate = x0
   previous_approximate = 0
-  while(counter < N) {
+  for (n in 1:N) {
       if((abs(previous_approximate - best_approximate)) < eps) {
         best_approximate
         break
@@ -143,8 +142,7 @@ newton_solver <- function(f, fprime, x0, N = 1000, eps = 10e-4) {
       previous_approximate = best_approximate
       best_approximate <- best_approximate - (f(best_approximate)/fprime(best_approximate))
       #This print statement lets you see the evolution of the algorithms approximation
-      print(paste("iteration", counter + 1, "best approximate: ", best_approximate))
-      counter <- counter + 1
+      print(paste("iteration", n + 1, "best approximate: ", best_approximate))
   }
   if(abs(previous_approximate - best_approximate) > eps) {
     warning("The error is very large")
