@@ -1,0 +1,181 @@
+---
+title: "3080 Lab2 Notes"
+author: "Jon Moses"
+date: "2026-01-15"
+output: html_document
+---
+
+```{r}
+if (1 + 1 == 2) {
+  print("Arithmetic works!")
+}
+```
+
+
+```{r}
+if (0 < 1) {
+print("We have order!")
+} else {
+print("We don't have order!")
+}
+```
+
+
+```{r}
+x <- 0
+if (x < 0) {
+print("x is less than zero")
+} else if (x == 0) {
+print("x is zero")
+} else {
+print("x is greater than zero")
+}
+```
+
+
+```{r}
+(x <- rnorm(10))
+x < 0
+ifelse(x < 0, 0, x)
+```
+
+
+```{r}
+#Switch checks the value of the first variable that is given and does something depending on which value it ontains.
+switch(stat,
+mean = mean(x),
+median = median(x),
+max = max(x),
+min = min(x)
+)
+```
+
+
+```{r}
+tryCatch(1+1, error = function(e) {"Help!"}, finally = print("Hello"))
+
+# Errors are objects that you can use/view
+error_obj <- tryCatch(1 + "a", error = function(e) {e})
+str(error_obj)
+```
+
+
+```{r}
+x = 0
+while (x<10) {
+  print(x)
+  x = x+1
+}
+```
+
+
+```{r}
+x = 1:10
+for (i in x) {
+  print(i)
+}
+
+
+
+```
+
+
+```{r}
+x <- "a"
+if (is.character(x)) {
+  stop("x should not be a character")
+} else {
+  x + 1
+}
+
+
+
+
+```
+
+
+```{r}
+# You can save functions in variable, vectors, and lists
+c(mean, median, sd)
+# This is a vector that contains several functions
+
+
+```
+
+
+
+```{r}
+
+collector <- function(..., stringout = "Hello!") {
+print(stringout)
+vec <- c(...)
+return(vec)
+}
+u <- collector(1, 1, 4)
+
+
+```
+
+
+```{r}
+#... means an unknown number of inputs
+```
+
+
+```{r}
+# The following comments are more than just comments; they're ready for
+# interpretation by a package called roxygen2, which can create documentation
+# for functions and other package objects.
+#' Z Statistic
+#'
+#' Compute the \eqn{z}-statistic for a given data set.
+#'
+#' @param ... Data for which to compute the \eqn{z}-statistic
+#' @param mu The mean of the population under the null hypothesis
+#' @param sigma The population standard deviation; unset by default (this is
+#' achieved by making the default value of the parameter
+#' \code{NULL})
+#' @return The \eqn{z}-statistic
+#' @examples
+#' z.stat(1, 2, 3, mu = 2, sigma = 1)
+z.stat <- function(..., mu = 0, sigma = NULL) {
+x <- tryCatch(c(...), # Attempt to convert ... into a vector
+error = function(e) {
+"Inappropriate data passed to z.stat(); it should be numeric"
+})
+if (is.logical(x)) {
+warning("Data passed to z.stat() is logical; may be inappropriate for z" %s%
+"test")
+} else if (!is.numeric(x)) {
+stop("Data passed to z.stat() must be numeric")
+}
+if (is.null(sigma)) {
+warning("sigma not set; defaulting to sample standard deviation, but" %s%
+"statistic may not be appropriate")
+sigma <- sd(x)
+}
+if (!is.numeric(sigma) | sigma <= 0) {
+stop("sigma must be a positive number")
+}
+xbar <- mean(x)
+n <- length(x)
+(xbar - mu) / (sigma / sqrt(n))
+}
+```
+
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```

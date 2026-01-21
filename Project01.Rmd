@@ -1,0 +1,42 @@
+---
+title: "Lab 1"
+author: "Jon Moses"
+date: "2026-01-08"
+output: html_document
+---
+
+# Problem 1
+### A list of all my pets
++ *Cat*
++ **Goldfish**
+
+y = mx+b
+
+$$y = mx+b$$
+
+
+# Problem 2
+
+```{r, fig.cap="Age vs Height"}
+names <- c("Jon", "Joe", "Jack")
+ages <- c(25, 23, 21)
+heights <- c(68, 72, 64)
+df <- data.frame(name=names, age=ages, height=heights)
+knitr::kable(df)
+plot(ages, heights, xlab = "Age", ylab = "Height")
+
+
+```
+
+
+# Problem 3
+
+```{r}
+squarefive <- function(value = 2) {
+  return((value*value)+5)
+}
+# Testing 3 in our function
+squarefive(3)
+# Testing the default value
+squarefive()
+```
