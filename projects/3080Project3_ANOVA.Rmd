@@ -1,0 +1,160 @@
+---
+title: "MATH 3080 Lab Project 3"
+author: "Your Name Here"
+date: "12/29/2019"
+output:
+  pdf_document:
+    toc: TRUE
+---
+
+# Problem 1 (Verzani problem 12.2)
+
+*For the data set `Cars93` (**MASS**) perform a one-way analysis of variance of
+`MPG.highway` for each level of `DriveTrain`. Does the data support the null
+hypothesis of equal population means? (Use `aov()` for this problem.)*
+
+```{r, error = TRUE}
+library(MASS)
+boxplot(MPG.highway ~ DriveTrain, data = Cars93)
+test <- aov(MPG.highway ~ DriveTrain, data = Cars93)
+oneway.test(MPG.highway ~ DriveTrain, data = Cars93)
+
+summary(test)
+```
+
+
+There is strong evidence that the variance is different. Our p-value of .0023 indicates that the populations in these levels are different.
+If we assume an alpha level of .01 we would reject the null hypothesis. Visually inspecting the boxplot also indicates that there are dramatic differences between these populations. 
+
+
+# Problem 2 (Verzani problem 12.4)
+
+*The data set `carsafety` (**UsingR**) contains car-crash data. For several
+makes of cars the number of drivers killed per million is recorded in
+`Drivers.deaths`. The number of drivers of other cars killed in accidents with
+these cars, per million, is recorded in `Other.deaths`. The variable `type` is a
+factor indicating the type of car.*
+
+*Perform a one-way analysis of variance of the model `Drivers.deaths ~ type`.
+Check for equal variances and normality. (Use `oneway.test()` for this problem.)*
+
+```{r, error = TRUE}
+library(UsingR)
+oneway.test(Driver.deaths ~ type, data = carsafety)
+boxplot(Driver.deaths ~ type, data = carsafety)
+suvData <- carsafety[carsafety$type == "SUV", ]
+compactData <- carsafety[carsafety$type == "compact", ]
+largeData <- carsafety[carsafety$type == "large", ]
+midsizeData <- carsafety[carsafety$type == "midsize", ]
+minivanData <- carsafety[carsafety$type == "minivan", ]
+pickupData <- carsafety[carsafety$type == "pickup", ]
+
+
+qqnorm(suvData$Driver.deaths)
+qqline(suvData$Driver.deaths)
+qqnorm(compactData$Driver.deaths)
+qqline(compactData$Driver.deaths)
+qqnorm(largeData$Driver.deaths)
+qqline(largeData$Driver.deaths)
+qqnorm(midsizeData$Driver.deaths)
+qqline(midsizeData$Driver.deaths)
+qqnorm(minivanData$Driver.deaths)
+qqline(minivanData$Driver.deaths)
+qqnorm(pickupData$Driver.deaths)
+qqline(pickupData$Driver.deaths)
+```
+
+Is there a difference in population means? Can you assume equal variances? What about normally
+distributed populations? There should be a plot associated with each of these. 
+
+Yes there is a difference in the mean. our oneway test had a p value of 3.75e-05 which is very small. No, we can not assume equal variances based on visual inspection of the boxplot. There are dramatic differences between some of the types, with minivans having a much lower mean and much tighter distribution than any of the other types. I think it is generally safe to assume normality for these populations, however the sample size in some of these groups is too small to be certain.
+
+*Repeat with an analysis of variance of the model `Other.deaths ~ type`. 
+
+```{r, error = TRUE}
+summary(aov(Driver.deaths ~ type, data = carsafety))
+
+
+```
+
+Is there a difference in population means? Can you assume equal variances? What about normally distributed populations? There should be a plot associated with each of these. 
+
+*Replace this with your answer*
+
+
+# Problem 3 (Verzani problem 12.7)
+
+*A manufacturer of point-of-sale merchandise tests three types of ENTER-button
+markings. They wish to minimize wear, as customers get annoyed when the markings
+on this button wear off. They construct a test of the three types, and conduct
+several trials for each. The results, in unspecified units, are recorded in the
+following table:*
+
+|        |     |     |     |     |     |     |
+|--------|-----|-----|-----|-----|-----|-----|
+| Type 1 | 303 | 293 | 296 | 299 | 298 |     |
+| Type 2 | 322 | 326 | 315 | 318 | 320 | 320 |
+| Type 3 | 309 | 327 | 317 | 315 |     |     |
+
+*Is there a difference in wear time among the three types? Answer this using a
+one-way ANOVA.*
+
+Hint: To create your dataframe, the command `rep(something , times = c(something))` might be helpful. Replace `something` with your own code. 
+
+```{r, error = TRUE}
+button1times = c(303, 293, 296, 299, 298)
+button2times = c(322, 326, 315, 318, 320, 320)
+button3times = c(309, 327, 317, 315)
+
+buttontimescombine = c(button1times, button2times, button3times)
+
+button1vec <- rep("button_1", times = 5)
+button2vec <- rep("button_2", times = 6)
+button3vec <- rep("button_3", times = 4)
+buttontype <- c(button1vec, button2vec, button3vec)
+
+button_df <- data.frame(
+  "times" = buttontimescombine,
+  "button" = buttontype
+)
+boxplot(times ~ button, data = button_df)
+oneway.test(times ~ button, data = button_df)
+tuk <- TukeyHSD(aov(times ~ button, data = button_df))
+plot(tuk)
+```
+
+The ANOVA test supports that there is a difference in wear time between the buttons. visually inspecting the boxplot leads me to believe that button 1 population is significantly different than button 2 or 3. The p-value of the one way analysis is .0001522 which indicates very strong evidence that the means are different
+
+# Problem 4 (Verzani problem 12.19)
+
+*The `InsectSprays` data set contains a variable `count`, which counts the
+number of insects and a factor `spray`, which indicates the treatment given.*
+
+*First perform an analysis of variance to see whether the treatments make a
+difference (use aov this time). If so, perform the Tukey HSD procedure to see which pairwise
+treatments differ.*
+
+```{r, error = TRUE}
+summary(aov(count ~ spray, data=InsectSprays))
+res <- aov(count ~ spray, data=InsectSprays)
+plot(TukeyHSD(res))
+
+```
+
+Do the treatments make a difference? How do you know?
+
+*Your answer here* 
+
+If yes, perform the Tukey HSD procedure to see which pairwise
+treatments differ. Include the plotted version of TukeyHSD. *
+
+```{r, error = TRUE}
+# Your code here 
+```
+
+What do these results tell us? Is 0 in any of the confidence intervals? What does this mean? 
+
+*Your answer goes here* 
+
+
+
