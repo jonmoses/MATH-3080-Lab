@@ -67,19 +67,34 @@ qqline(pickupData$Driver.deaths)
 Is there a difference in population means? Can you assume equal variances? What about normally
 distributed populations? There should be a plot associated with each of these. 
 
+## Response:
 Yes there is a difference in the mean. our oneway test had a p value of 3.75e-05 which is very small. No, we can not assume equal variances based on visual inspection of the boxplot. There are dramatic differences between some of the types, with minivans having a much lower mean and much tighter distribution than any of the other types. I think it is generally safe to assume normality for these populations, however the sample size in some of these groups is too small to be certain.
 
 *Repeat with an analysis of variance of the model `Other.deaths ~ type`. 
 
 ```{r, error = TRUE}
-summary(aov(Driver.deaths ~ type, data = carsafety))
+summary(aov(Other.deaths ~ type, data = carsafety))
+boxplot(Other.deaths ~ type, data = carsafety)
 
+qqnorm(suvData$Other.deaths)
+qqline(suvData$Other.deaths)
+qqnorm(compactData$Other.deaths)
+qqline(compactData$Other.deaths)
+qqnorm(largeData$Other.deaths)
+qqline(largeData$Other.deaths)
+qqnorm(midsizeData$Other.deaths)
+qqline(midsizeData$Other.deaths)
+qqnorm(minivanData$Other.deaths)
+qqline(minivanData$Other.deaths)
+qqnorm(pickupData$Other.deaths)
+qqline(pickupData$Other.deaths)
 
 ```
 
 Is there a difference in population means? Can you assume equal variances? What about normally distributed populations? There should be a plot associated with each of these. 
 
-*Replace this with your answer*
+## Response
+The ANOVA test strongly suggest we reject the null hypothesis, indicating that there is a difference in means between at least one of the data sets. I don't think we can assume equal variances after visually inspecting the box plot. The minivan test data is very tightly distributed while pickup test data has an extremely large spread. The normality plots appear normal so we can assume norma, populations.
 
 
 # Problem 3 (Verzani problem 12.7)
@@ -135,26 +150,31 @@ difference (use aov this time). If so, perform the Tukey HSD procedure to see wh
 treatments differ.*
 
 ```{r, error = TRUE}
+InsectSprays
 summary(aov(count ~ spray, data=InsectSprays))
 res <- aov(count ~ spray, data=InsectSprays)
 plot(TukeyHSD(res))
-
+TukeyHSD(res)
 ```
 
 Do the treatments make a difference? How do you know?
 
-*Your answer here* 
+## Response:
+Yes, the treatments differ. There are several combinations with very low p-values, indicating a difference in means.
+
 
 If yes, perform the Tukey HSD procedure to see which pairwise
 treatments differ. Include the plotted version of TukeyHSD. *
 
 ```{r, error = TRUE}
-# Your code here 
+plot(TukeyHSD(res))
+TukeyHSD(res)
 ```
 
 What do these results tell us? Is 0 in any of the confidence intervals? What does this mean? 
 
-*Your answer goes here* 
-
+## Response:
+Several of the pairings have a 95% confidence interval that doesn't capture 0, indicating a statistically significant difference in means. 
+If 0 is captured by the interval in this 95% test then we know that for that pairing the difference in means is not statistically significicant and can be explained by random variations in the samples.
 
 
